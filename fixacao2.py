@@ -17,12 +17,8 @@ def comeco_ou_fim_6(nums):
     comeco_ou_fim_6([6, 1, 2, 3]) -> True
     comeco_ou_fim_6([3, 2, 1]) -> False
     """
-    if nums[0] == 6 :
-        return True
-    if nums[-1] == 6:
-        return True
-    return False
-       
+    return nums[0] == 6 or nums[-1] == 6
+
 def inicio_fim_igual(nums):
     """
     Retorna True se a lista nums possui pelo menos um elemento
@@ -31,11 +27,11 @@ def inicio_fim_igual(nums):
     inicio_fim_igual([1, 2, 3, 1]) -> True
     inicio_fim_igual([1, 2, 1]) -> True
     """
-    if len(nums) > 0 and nums[0] == nums[-1]:
-        return True
-    else:
+    if len(nums) < 1:
         return False
-
+    else:
+        return nums[0] == nums[-1]
+    
 def extremidades_iguais(a, b):
     """
     Dada duas listas a e b verifica se os dois primeiros são
@@ -45,12 +41,7 @@ def extremidades_iguais(a, b):
     extremidades_iguais([1, 2, 3], [7, 3, 2]) -> False
     extremidades_iguais([1, 2, 3], [1, 3]) -> True
     """
-    if a[0] == b[0]:
-        return True
-    if a[-1] == b[-1]:
-        return True
-    return False
-
+    return a[0] == b[0] or a[-1] == b[-1]
 
 def maior_ponta(nums):
     """
@@ -60,13 +51,9 @@ def maior_ponta(nums):
     maior_ponta([1, 2, 3]) -> [3, 3, 3]
     maior_ponta([1, 3, 2]) -> [2, 2, 2]
     """
-    lista = []
-    for _ in range(len(nums)):
-        if nums[0] > nums[-1]:
-            lista.append(nums[0])
-        else:
-            lista.append(nums[-1])
-    return lista
+    numero = nums[0] if nums[0] >= nums[-1] else nums[-1]
+    
+    return [numero for _ in nums]
 
 def soma_2_primeiros(nums):
     """
@@ -74,8 +61,8 @@ def soma_2_primeiros(nums):
     dois primeiros elementos.
     Se a lista tiver menos de dois elementos, soma o que for possível.
     """
-    return sum(nums[0:2])
-  
+    return nums[0] + nums[1] if len(nums) >= 2 else sum(nums)
+
 def meio_do_caminho(a, b):
     """
     sejam duas listas de inteiros a e b
@@ -85,35 +72,38 @@ def meio_do_caminho(a, b):
     meio_do_caminho([7, 7, 7], [3, 8, 0]) -> [7, 8]
     meio_do_caminho([5, 2, 9], [1, 4, 5]) -> [2, 4]
     """
-    return [a[len(a)//2], b[len(b)//2]],
-
+    return [
+        a[len(a) // 2],
+        b[len(b) // 2],
+    ]
+    
 def numero_invertido(numero):
     """Receba um inteiro positivo e o mostre invertido. Ex.: 1234 gera 4321"""
-    numero_inverso = int(str(numero)[::-1]);
-    return numero_inverso
-
+    return int((str(numero)[::-1]))
+    
 def gago(texto):
     """Receba um texto e devolva-o repetindo a primeira letra de cada palavra, junto com um traço
     gago("preciso tirar dez") -> "p-preciso t-tirar d-dez"
     gago("eu deveria ter estudado mais") -> "e-eu d-deveria t-ter e-estudado m-mais"
     """
-    texto_dividido = texto.split(" ")
-    for index,palavra in enumerate(texto_dividido):
-        texto_dividido[index] = f"{palavra[0]}-{palavra}"
-    return " ".join(texto_dividido)
+    texto_cortado = texto.split(" ")
     
+    for index, palavra in enumerate(texto_cortado):
+        texto_cortado[index] = f"{palavra[0]}-{palavra}"
+        
+    return " ".join(texto_cortado)
 
 def saudacao(nome, hora):
     """Escreva uma saudação para a pessoa, dependendo do horário do dia:
     Entre 5 e 12: dia
     Entre 12 e 18: tarde
     Entre 18 e 5: noite"""
-
     horario = "Boa noite"
     if hora >= 5 and hora < 12:
         horario = "Bom dia"
     elif hora >= 12 and hora <= 18:
-        horario = "Boa tarde"
+        horario = " Boa tarde"
+        
     return f"{horario} {nome}"
 
 def rosquinhas(n):
@@ -124,11 +114,7 @@ def rosquinhas(n):
     rosquinhas(5) -> '5 rosquinhas'
     rosquinhas(23) -> 'muitas rosquinhas'
     """
-    mensa = '%d rosquinhas' % n
-    if n >= 10:
-        mensa = 'muitas rosquinhas'
-    return mensa
-
+    return f"{n if n < 10 else 'muitas'} rosquinhas"
 
 def pontas(s):
     """
@@ -137,10 +123,7 @@ def pontas(s):
     Assim 'palmeiras' retorna 'paas'
     No entanto, se a string tiver menos que 2 letras, retorna uma string vazia
     """
-    if len(s) < 2: 
-        return ''
-    return s[:2] + s[-2:]
-
+    return s[:2] + s[-2:] if len(s) > 1 else ""
 
 def fixa_primeiro(s):
     """
@@ -149,11 +132,7 @@ def fixa_primeiro(s):
     Assim 'abacate' retorna 'ab*c*te'
     Dica: use s.replace(stra, strb)
     """
-    stringA = s[0]
-    stringB = s[1:]
-    
-    return stringA + stringB.replace(stringA, "*")
-
+    return s[0] + s[1:].replace(s[0], "*")
 
 def nomes_pontas(n):
     """Dada uma string n contendo o nome completo de uma pessoa,
@@ -163,13 +142,24 @@ def nomes_pontas(n):
     """
     return f"{n.split(' ')[0].upper()} {n.split(' ')[-1].upper()}"
 
-    
 def nomes_pontas_e_iniciais_do_meio(n):
     """Dada uma string n contendo o nome completo de uma pessoa,
     retorne uma nova string contendo o primeiro e o último nome,
     e as inciais dos nomes do meio, em maiúsculas.
     "Marco André Lopes Mendes" -> "MARCO A L MENDES"
     """
+    prepos = ["da","de","do"]
+    nomes = n.split(" ")
+    inicial = []
+    
+    for nome in nomes[1:-1]:
+        if len(nome) > 1 and nome not in prepos:
+            inicial.append(nome[0])
+         
+    if not len(inicial) > 0:
+        return f"{nomes[0].upper()} {nomes[-1].upper()}"
+    else:
+        return f"{nomes[0].upper()} {' '.join(inicial)} {nomes[-1].upper()}"
 
 
 def mistura2(a, b):
@@ -180,18 +170,37 @@ def mistura2(a, b):
       'mix', pod' -> 'pox mid'
       'dog', 'dinner' -> 'dig donner'
     """
-    return b[:2] + a[2:] + ' ' + a[:2] + b[2:]
+    return f"{b[:2]}{a[2:]} {a[:2]}{b[2:]}" 
 
 def tres_maiusculas(texto):
     """Encontre a primeira ocorrência de 3 letras maiúsculas consecutivas
     no texto."""
-
+    posicoes = [index for index, letra in enumerate(texto) if letra == letra.upper()]
+    
+    if len(posicoes) < 3:
+        return None
+    
+    if not (posicoes[0] + 1 == posicoes[1] and posicoes[1] + 1 == posicoes[2]):
+        return None
+    else:
+        return posicoes[0]
 
 def im_pares_unicos(lista):
     """Separe em listas os impares e pares únicos (não considere duplicidades),
     dos inteiros da 'lista'
     """
-
+    par = [
+        num
+        for index, num in enumerate(lista)
+        if num % 2 == 0 and index == lista.index(num)
+    ]
+    imp = [
+        num 
+        for index, num in enumerate(lista)
+        if num % 2 != 0 and index == lista.index(num)
+    ]
+    
+    return(par, imp)
 
 ## Área de testes: só mexa aqui se souber o que está fazendo!
 acertos = 0
